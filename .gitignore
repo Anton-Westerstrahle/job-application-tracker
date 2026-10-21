@@ -1,0 +1,14 @@
+# Databaser
+*.db
+*.sqlite
+*.sqlite3
+
+# Lokal datamapp
+/data/
+
+# Miljöfiler med hemligheter
+.env
+.env.*
+
+# Loggfiler
+*.log
