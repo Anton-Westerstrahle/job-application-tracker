@@ -6,7 +6,7 @@
 <?php
 require_once __DIR__ . '/db.php';
 
-echo '<a href="">Add Application</a>';
+echo '<a href="create.php">Add Application</a>';
 
 // Fetch all applications from the database
 $applications = $pdo->query('SELECT * FROM applications')
