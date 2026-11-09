@@ -27,6 +27,7 @@ foreach ($columns as $column) {
 }
 
 echo "<th>Edit</th>";
+echo "<th>Delete</th>";
 echo "</tr>";
 
 // Show application data in table rows
@@ -47,6 +48,7 @@ foreach ($applications as $Row) {
         echo "</td>";
     }
     echo '<td><a href="edit.php?id=' . (int)$Row['id'] . '">Edit</a></td>';
+    echo '<td><a href="delete.php?id=' . (int)$Row['id'] . '">Delete</a></td>';
     echo "</tr>";
 }
 
