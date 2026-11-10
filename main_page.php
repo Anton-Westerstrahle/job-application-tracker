@@ -8,14 +8,35 @@ require_once __DIR__ . '/db.php';
 
 echo '<a href="create.php">Add Application</a>';
 
-// Fetch all applications from the database
-$applications = $pdo->query('SELECT * FROM applications')
-    ->fetchAll(PDO::FETCH_ASSOC);
-
+$search = trim($_GET['search'] ?? '');
+$sql = "SELECT * FROM applications WHERE 1=1";
+$params = [];
+// Filter by company name
+if ($search !== '') {
+    $sql .= " AND company LIKE ?";
+    $params[] = '%' . $search . '%';
+}
 // Fetch column names from the applications table
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $stmt = $pdo->query('PRAGMA table_info(applications)');
 $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+?>
+<form action="main_page.php" method="GET">
+     <label for="search">Company:</label>
+         <input
+        type="text"
+        id="search"
+        name="search"
+        value="<?= htmlspecialchars($search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+        placeholder="Search company..."
+    >
+<button type="submit">Search</button>
+    <a href="main_page.php">Show all</a>
+</form>
+<?php
 echo "<table border='1'>";
 echo "<tr>";
 
