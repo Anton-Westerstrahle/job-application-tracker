@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Tracker</title>
+</head>
 <body>
 <h1>Job Tracker</h1>
 
@@ -124,7 +128,7 @@ echo '<a href="create.php">Add Application</a>';
     >
 
         <br><br>
-        
+
 <button type="submit">Search</button>
     <a href="main_page.php">Show all</a>
 </form>
