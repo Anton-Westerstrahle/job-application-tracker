@@ -23,10 +23,9 @@ $selectedStatuses = array_values(
     array_intersect($allowedStatuses, $selectedStatuses)
 );
 
+$position = trim($_GET['position'] ?? '');
 $dateFrom = $_GET['date_from'] ?? '';
 $dateTo = $_GET['date_to'] ?? '';
-echo '<a href="create.php">Add Application</a>';
-
 $search = trim($_GET['search'] ?? '');
 $sql = "SELECT * FROM applications WHERE 1=1";
 $params = [];
@@ -35,7 +34,14 @@ if ($search !== '') {
     $sql .= " AND company LIKE ?";
     $params[] = '%' . $search . '%';
 }
-// Flter by status
+
+// Filter by position
+if ($position !== '') {
+    $sql .= " AND position LIKE ?";
+    $params[] = '%' . $position . '%';
+}
+
+// Filter by status
 if (count($selectedStatuses) > 0) {
     $placeholders = implode(
         ',',
@@ -67,6 +73,8 @@ $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt = $pdo->query('PRAGMA table_info(applications)');
 $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo '<a href="create.php">Add Application</a>';
+
 ?>
 <form action="main_page.php" method="GET">
      <label for="search">Company:</label>
@@ -77,6 +85,14 @@ $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
         value="<?= htmlspecialchars($search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
         placeholder="Search company..."
     >
+
+        <p>Position:</p>
+    <input
+        type="text"
+        name="position"
+        value="<?= htmlspecialchars($position, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+    >
+
        <p>Filter by status:</p>
     <?php foreach ($allowedStatuses as $option): ?>
         <label>
@@ -106,6 +122,9 @@ $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
         name="date_to"
         value="<?= htmlspecialchars($dateTo, ENT_QUOTES, 'UTF-8') ?>"
     >
+
+        <br><br>
+        
 <button type="submit">Search</button>
     <a href="main_page.php">Show all</a>
 </form>
